@@ -3,39 +3,27 @@
 $title = 'Registrar Proyecto';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $title          = $_POST['title'] ?? '';
-    $url            = $_POST['url'] ?? '';
-    $description    = $_POST['description'] ?? '';
+    $validator = new Validator($_POST, [
+        'title'       => 'required|min:3'|'max:190',
+        'url'         => 'required|url|max:190',
+        'description' => 'nullable|min:3|max:500',
+    ]);
 
-    $errors = [];
-
-    if (! $title) {
-        $errors[] = 'El título es requerido';
-    }
-
-    if (! $url) {
-        $errors[] = 'La url es requerida';
-    } elseif (! filter_var($url, FILTER_VALIDATE_URL)) {
-        $errors[] = 'La url no es válida';
-    }
-
-    if (! $description) {
-        $errors[] = 'La descripción es requerida';
-    }
-
-    if (empty($errors)) {
+    if ($validator->passes()) {
         $db->query(
             'INSERT INTO links (title, url, description) VALUES (:title, :url, :description)',
             [
-                'title'         => $title,
-                 'url'          => $url, 
-                 'description'  => $description
+                'title'         => $_POST['title'],
+                 'url'          => $_POST['url'], 
+                 'description'  => $_POST['description'],
                  ]
         );
 
         header('Location: /links');
         exit;
-    }
+    } else {
+        $errors = $validator->errors();
+    }   
 }
 
 require __DIR__ .'/../../resources/links-create.template.php';
