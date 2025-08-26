@@ -20,15 +20,19 @@
 
             <p class="mt-2 text-sm text-gray-600"><?= $link['description'] ?></p>
 
-            <div>
+            <div class="flex items-center justify-end gap-4 mt-6">
                 <form action="/links/delete" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar?');">
                     <input type="hidden" name="_method" value="DELETE">
                     <input type="hidden" name="id" value="<?= $link['id'] ?>">
 
-                    <button type="submit" class="mt-2 text-xs font-semibold text-red-600 hover:text-red-800 cursor-pointer">
+                    <button type="submit" class="text-xs font-semibold bg-red-600 hover:bg-red-800 text-white px-3 py-1 rounded-md cursor-pointer">
                         Eliminar
                     </button>
                 </form>
+
+                <a href="/links/edit?id=<?= $link['id'] ?>" class="text-xs font-semibold text-gray-900 hover:text-gray-600">
+                    Editar &rarr;
+                </a>
             </div>
         </article>
     <?php endforeach; ?>
