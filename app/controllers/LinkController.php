@@ -6,17 +6,20 @@ use Framework\Validator;
 
 class LinkController{
     public function index(){
-
         $db = new Database();
-        $links = $db
+
+        view('links', [
+            'title' => 'Proyectos',
+            'links' =>  $db
             ->query('SELECT * FROM links ORDER BY id DESC')
-            ->get();
-        require __DIR__ .'/../../resources/links.template.php';
+            ->get(),
+        ]);
     }
 
     public function create(){
-        $title = 'Registrar Proyecto';
-        require __DIR__ .'/../../resources/links-create.template.php';
+        view('links-create', [
+            'title' => 'Registrar Proyecto',
+        ]);
     }
 
     public function store(){
@@ -40,10 +43,23 @@ class LinkController{
         header('Location: /links');
         exit;
     }
-        $errors = $validator->errors();
+        view('links-create', [
+            'title' => 'Registrar Proyecto',
+            'errors' => $validator->errors(),
+        ]);
+    }
 
-        $title = 'Registrar Proyecto';
-        require __DIR__ .'/../../resources/links-create.template.php';
+    public function edit(){
+        $db = new Database();
+
+        view('links-edit', [
+            'title' => 'Editar Proyecto',
+            'link' => $db
+            ->query('SELECT * FROM links WHERE id = :id', [
+                'id' => $_GET['id'] ?? null,
+            ])
+            ->firstOrFail(),
+        ]);
     }
 
     public function update(){
@@ -55,11 +71,9 @@ class LinkController{
 
         $db = new Database();
 
-        $link = $db
-            ->query('SELECT * FROM links WHERE id = :id', [
-                'id' => $_GET['id'] ?? null,
-            ])
-            ->firstOrFail();
+        $link = $db->query('SELECT * FROM links WHERE id = :id', [
+            'id' => $_GET['id'] ?? null,
+        ])->firstOrFail();
 
         if ($validator->passes()) {
             $db->query(
@@ -75,24 +89,16 @@ class LinkController{
             header('Location: /links');
             exit;
         }
+
         $errors = $validator->errors();
-        $title = 'Editar Proyecto';
 
-        require __DIR__ .'/../../resources/links-edit.template.php';
+        view('links-edit', [
+            'title' => 'Editar Proyecto',
+            'errors' => $validator->errors(),
+        ]);
     }
 
-    public function edit(){
-        $title = 'Editar Proyecto';
-
-        $db = new Database();
-
-        $link = $db
-            ->query('SELECT * FROM links WHERE id = :id', [
-                'id' => $_GET['id'] ?? null,
-            ])
-            ->firstOrFail();
-            require __DIR__ .'/../../resources/links-edit.template.php';
-    }
+    
 
     public function destroy(){
         $db = new Database();
