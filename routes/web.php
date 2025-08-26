@@ -11,4 +11,4 @@ $router->get('/post', [PostController::class, 'show']);
 
 $router->get('/links', [LinkController::class, 'index']);
 $router->get('/links/create', [LinkController::class, 'create']);
-$router->post('/links', [LinkController::class, 'store']);
+$router->post('/links/store', [LinkController::class, 'store']);

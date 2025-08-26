@@ -29,7 +29,7 @@ class Validator
         }
     }
 
-    protected function hasError(string $name, string $parameter, string $field, $value): ?string
+    protected function hasError(string $name, ?string $parameter, string $field, $value): ?string
     {
         return match ($name) {
             'required' => $this->validateRequired($field, $value),
