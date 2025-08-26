@@ -4,9 +4,6 @@ class Router
 {
     protected $routes = [];
 
-    
-    
-    
     public function __construct(){
         $this->loadRoutes('web');
     }
@@ -20,17 +17,17 @@ class Router
         $this->routes['POST'][$uri] = $action;
     }
 
+    public function delete($uri, $action){
+        $this->routes['DELETE'][$uri] = $action;
+    }
+
     public function run()
     {
         $Uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $method = $_SERVER['REQUEST_METHOD']; // GET, POST
+        $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD']; // GET, POST, DELETE
 
         $action = $this->routes[$method][$Uri] ?? null;
-
-        // echo '<pre>';
-        // var_dump($this->routes);
-        // die();
 
         if (!$action){
             exit('Route not found'.$method.''.$Uri);
