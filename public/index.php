@@ -1,10 +1,8 @@
 <?php 
 
-require __DIR__ . '/../framework/Database.php';
-require __DIR__ .'/../framework/Validator.php';
-require __DIR__ .'/../framework/Router.php';
+require __DIR__ .'/../bootstrap.php';
 
-$db = new Database();
+use Framework\Router;
 
 $router = new Router();
 

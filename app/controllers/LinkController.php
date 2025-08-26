@@ -1,5 +1,9 @@
 <?php
 
+namespace App\Controllers;
+use Framework\Database;
+use Framework\Validator;
+
 class LinkController{
     public function index(){
 

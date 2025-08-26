@@ -1,5 +1,8 @@
 <?php
 
+namespace App\Controllers;
+Use Framework\Database;
+
 class PostController{
     public function show(){
         $title = 'Proyectos';
