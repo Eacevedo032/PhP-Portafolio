@@ -21,11 +21,15 @@ class Router
         $this->routes['DELETE'][$uri] = $action;
     }
 
+    public function put($uri, $action){
+        $this->routes['PUT'][$uri] = $action;
+    }
+
     public function run()
     {
         $Uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 
-        $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD']; // GET, POST, DELETE
+        $method = $_POST['_method'] ?? $_SERVER['REQUEST_METHOD']; // GET, POST, DELETE,PUT
 
         $action = $this->routes[$method][$Uri] ?? null;
 

@@ -5,6 +5,7 @@
 
 <div class="w-full max-w-xl mx-auto">
     <form action="/links/update?id=<?= $link['id'] ?>" method="POST">
+        <input type="hidden" name="_method" value="PUT">
         <div class="mb-4">
             <label class="text-sm font-semibold text-gray-900">Título</label>
             <div class="mt-2">
