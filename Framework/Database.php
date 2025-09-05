@@ -11,9 +11,23 @@ class Database
 
     public function __construct()
     {
-        $dsn = 'mysql:host=127.0.0.1;dbname=web_php;charset=utf8mb4';
+        //$dsn = 'mysql:host=127.0.0.1;dbname=web_php;charset=utf8mb4';
+        $dsn = sprintf(
+            'mysql:host=%s;dbname=%s;charset=%s',
+            config ('host', 'localhost'),
+                    config ('dbname', 'web'),
+                    config ('charset'),
+            );
 
-        $this->connection = new PDO($dsn, 'root', '');
+        //var_dump($dsn);die();
+
+        //$this->connection = new PDO($dsn, 'root', '');
+        $this->connection = new PDO(
+            $dsn,
+            config('username'),
+            config('password'),
+            config('options', [])
+        );
     }
 
     public function query($sql, $params = [])
@@ -26,12 +40,12 @@ class Database
 
     public function get()
     {
-        return $this->statement->fetchAll(PDO::FETCH_ASSOC);
+        return $this->statement->fetchAll();
     }
 
     public function firstOrFail()
     {
-        $result = $this->statement->fetch(PDO::FETCH_ASSOC);
+        $result = $this->statement->fetch();
 
         if (! $result) {
             exit('404 Not Found');

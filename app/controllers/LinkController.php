@@ -1,16 +1,13 @@
 <?php
 
 namespace App\Controllers;
-use Framework\Database;
 use Framework\Validator;
 
 class LinkController{
     public function index(){
-        $db = new Database();
-
         view('links', [
             'title' => 'Proyectos',
-            'links' =>  $db
+            'links' =>  db()
             ->query('SELECT * FROM links ORDER BY id DESC')
             ->get(),
         ]);
@@ -30,8 +27,7 @@ class LinkController{
     ]);
 
     if ($validator->passes()) {
-        $db = new Database();
-        $db->query(
+        db()->query(
             'INSERT INTO links (title, url, description) VALUES (:title, :url, :description)',
             [
                 'title'         => $_POST['title'],
@@ -40,8 +36,9 @@ class LinkController{
                  ]
         );
 
-        header('Location: /links');
-        exit;
+        //header('Location: /links');
+        //exit;
+        redirect('/links');
     }
         view('links-create', [
             'title' => 'Registrar Proyecto',
@@ -50,11 +47,9 @@ class LinkController{
     }
 
     public function edit(){
-        $db = new Database();
-
         view('links-edit', [
             'title' => 'Editar Proyecto',
-            'link' => $db
+            'link' => db()
             ->query('SELECT * FROM links WHERE id = :id', [
                 'id' => $_GET['id'] ?? null,
             ])
@@ -69,14 +64,12 @@ class LinkController{
             'description' => 'nullable|min:10|max:500',
         ]);
 
-        $db = new Database();
-
-        $link = $db->query('SELECT * FROM links WHERE id = :id', [
+        $link = db()->query('SELECT * FROM links WHERE id = :id', [
             'id' => $_GET['id'] ?? null,
         ])->firstOrFail();
 
         if ($validator->passes()) {
-            $db->query(
+            db()->query(
                 'UPDATE links SET title = :title, url = :url, description = :description WHERE id = :id',
                 [
                     'id'           => $link['id'],
@@ -86,8 +79,9 @@ class LinkController{
                 ]
             );
 
-            header('Location: /links');
-            exit;
+            //header('Location: /links');
+            //exit;
+            redirect('/links');
         }
 
         $errors = $validator->errors();
@@ -101,13 +95,13 @@ class LinkController{
     
 
     public function destroy(){
-        $db = new Database();
-        $db->query('DELETE FROM links WHERE id = :id', [
+        db()->query('DELETE FROM links WHERE id = :id', [
             'id' => $_POST['id'] ?? null,
         ]);
 
-        header('Location: /links');
-        exit;
+        //header('Location: /links');
+        //exit;
+        redirect('/links');
     }
 
 }

@@ -1,5 +1,7 @@
 <?php
 
+use Framework\Database;
+
 if (!function_exists('root_path')) {
     function root_path(string $path): string
     {
@@ -26,5 +28,47 @@ if(!function_exists('view')){
         //$filePath = __DIR__ .'/../../resources/' . $view . '.template.php';
 
         require $filePath;
+    }
+}
+
+if (!function_exists('old')) {
+    function old(string $key, mixed $default = null)
+    {
+        return $_POST[$key] ?? $default;
+    }
+}
+
+if (!function_exists('requestIs')) {
+    function requestIs(string $uri): bool
+    {
+        return $_SERVER['REQUEST_URI'] === normalize_path($uri);
+    }
+}
+
+if (!function_exists('config')) {
+    function config(string $key, mixed $default = null)
+    {
+        $config = require root_path('config/app.php');
+        return $config[$key] ?? $default;
+    }
+}
+
+if (!function_exists('redirect')) {
+    function redirect(string $uri): void
+    {
+        header("Location: /" .normalize_path($uri));
+        exit;
+    }
+}
+
+if (!function_exists("db")){
+function db(): Database
+    {
+        static $db = null;
+    if ($db === null) {
+        $db = new Database();
+    }
+
+    return $db;
     }
 }
