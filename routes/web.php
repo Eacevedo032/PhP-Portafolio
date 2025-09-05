@@ -1,6 +1,7 @@
 <?php
 
 use App\Controllers\AboutController;
+use App\Controllers\AuthController;
 use App\Controllers\HomeController;
 use App\Controllers\LinkController;
 use App\Controllers\PostController;
@@ -16,3 +17,5 @@ $router->post('/links/store',    [LinkController::class, 'store'],  Authenticate
 $router->get('/links/edit',      [LinkController::class, 'edit'],   Authenticated::class);
 $router->put('/links/update',    [LinkController::class, 'update'], Authenticated::class);
 $router->delete('/links/delete', [LinkController::class, 'destroy'],Authenticated::class);
+
+$router->get('/login',  [AuthController::class, 'login']);

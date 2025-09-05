@@ -72,3 +72,18 @@ function db(): Database
     return $db;
     }
 }
+
+if (!function_exists('resource_path')) {
+    function resource_path(string $path = ''): string
+    {
+        return root_path("resources/{$path}");
+    }
+}
+
+if (!function_exists('isAuthenticated')) {
+    function isAuthenticated(): bool
+    {
+        return isset($_SESSION['user']);
+        //return (bool) ($_SESSION['user'] ?? false);
+    }
+}
