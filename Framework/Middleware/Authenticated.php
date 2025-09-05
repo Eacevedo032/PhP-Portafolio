@@ -2,9 +2,9 @@
 
 namespace Framework\Middleware;
 
-class Authenticated
+class Authenticated implements MiddlewareInterface
 {
-    public function __invoke()
+    public function handle(): void
     {
         if (! isset($_SESSION['user'])) {
             redirect('/login');

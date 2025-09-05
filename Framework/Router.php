@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Framework\Middleware\Middleware;
+
 class Router
 {
     protected $routes = [];
@@ -44,8 +46,9 @@ class Router
 
         if ($middleware){
             //(new $middleware())();
-            $middleware = new $middleware();
-            $middleware();
+            /*$middleware = new $middleware();
+            $middleware();*/
+            Middleware::run(new $middleware());
         }
 
         [$controller, $method] = $action;
