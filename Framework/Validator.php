@@ -16,7 +16,7 @@ class Validator
     public function validate(): void
     {
         foreach ($this->rules as $field => $rules) {
-            $rules = explode('|', $rules);
+            $rules = is_array($rules) ? $rules : explode('|', $rules);
             $value = trim($this->Data[$field]);
 
             foreach ($rules as $rule) {
@@ -38,7 +38,8 @@ class Validator
             'min'      => strlen($value) < (int)$parameter                  ? "$field must be at least $parameter characters"   : null,
             'max'      => strlen($value) > (int)$parameter                  ? "$field must be at most $parameter characters"    : null,
             'url'      => !filter_var($value, FILTER_VALIDATE_URL)   ? "$field must be a valid URL"                      : null,
-            default    => null,
+            'email'    => !filter_var($value, FILTER_VALIDATE_EMAIL) ? "$field must be a valid email address"            : null,
+            default    => throw new \InvalidArgumentException("validation rule $name is not defined."),
         };
     }
 
