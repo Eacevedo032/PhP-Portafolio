@@ -14,21 +14,18 @@ class AuthController
 
     public function authenticate()
     {
-        $validator = new Validator($_POST, [
+        Validator::make($_POST, [
             'email' => ['required', 'email'],
             'password' => ['required', 'min:6'],
         ]);
 
-        if ($validator->passes()) {
-            $login = (new Authenticate())->login($_POST['email'], $_POST['password']);
+        $login = (new Authenticate())->login($_POST['email'], $_POST['password']);
 
-            if ($login) {
-                redirect('/');
-            }
+        if ($login) {
+            redirect('/');
         }
 
-        view('login',[
-            'errors' => $validator->errors()]);
+        //if login fails, redirect back to login page with error
     }
 
     public function logout()

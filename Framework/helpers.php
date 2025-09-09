@@ -87,3 +87,11 @@ if (!function_exists('isAuthenticated')) {
         //return (bool) ($_SESSION['user'] ?? false);
     }
 }
+
+if (!function_exists('back')) {
+    function back(): void
+    {
+        header('Location: ' . $_SERVER['HTTP_REFERER'] ?? '/');
+        exit;
+    }
+}

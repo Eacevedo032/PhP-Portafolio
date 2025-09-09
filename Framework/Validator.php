@@ -4,13 +4,18 @@ namespace Framework;
 
 class Validator
 {
-    protected $errors=[];
+    protected $errors = [];
 
     public function __construct(
-       protected array $Data,
-       protected array $rules = []
-    ){
+        protected array $Data,
+        protected array $rules = [],
+        protected bool $autoRedirect = true,
+    ) {
         $this->validate();
+
+        if ($autoRedirect && !$this->passes()) {
+            $this->redirectIfFailed();
+        }
     }
 
     public function validate(): void
@@ -47,6 +52,17 @@ class Validator
     {
         return ($value === null || $value === '') ? "$field is required" : null;
     }
+
+    protected function redirectIfFailed(): void
+    {
+        back();
+    }
+
+    public static function make(array $data, array $rules, bool $autoRedirect = true): self
+    {
+        return new self($data, $rules, $autoRedirect);
+    }
+
     public function passes(): bool
     {
         return empty($this->errors);
